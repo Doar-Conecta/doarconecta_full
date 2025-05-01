@@ -1,0 +1,61 @@
+.section {
+    background-color: #fff;
+    padding: 40px 20px;
+    text-align: left;
+  }
+  
+  .content {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  
+  .label {
+    color: green;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .outlined {
+    padding: 5px 20px;
+    background: transparent;
+    border: 2px solid #000;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .filled {
+    padding: 5px 20px;
+    background: #0b8e24;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .filled:hover {
+    background-color: #086b1c;
+  }
+  
