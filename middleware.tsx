@@ -6,7 +6,6 @@ export const config = {
     '/doacoes/:path*',
     '/profile/:path*',
     '/settings/:path*',
-    '/',
     '/login',
     '/registrar'
 
