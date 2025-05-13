@@ -8,8 +8,6 @@ export const config = {
     '/settings/:path*',
     '/login',
     '/registrar'
-
-
   ]
 }
 export function middleware(req: NextRequest) {

@@ -11,8 +11,8 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Início', href: '/' },
     { name: 'Quem somos', href: '/quemsomos' },
-    { name: 'Doações Ativas', href: '/doacoes' },
-    { name: 'Minhas Doações', href: '/minhasdoacoes' },
+    { name: 'Doações Disponíveis', href: '/doacoes-disponiveis' },
+    { name: 'Minhas Doações', href: '/doacoes' },
   ];
 
   return (
