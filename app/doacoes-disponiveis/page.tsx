@@ -24,7 +24,6 @@ export default function DoacoesDisponiveis() {
                 imagem="/familia-doar.jpg"
             />
             ))}
-
         </div>
       </main>
       <Footer />
