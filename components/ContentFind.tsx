@@ -1,4 +1,5 @@
 import styles from './ContentFind.module.css';
+import Link from 'next/link';
 
 export default function ContentFind() {
   return (
@@ -29,9 +30,9 @@ export default function ContentFind() {
           </select>
         </div>
         <div className={styles.divButton}>
-            <button className={styles.searchButton}>
+            <Link href="/doacoes-disponiveis"> <button className={styles.searchButton}>
             Buscar <span className={styles.icon}>🔍</span>
-            </button>
+            </button></Link>
         </div>
       </div>
     </section>

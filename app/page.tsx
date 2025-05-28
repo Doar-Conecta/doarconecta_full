@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main>
+      <main>       
         <BannerHome />
         <ContentFind />
         <SectionQuemSomos />
@@ -19,5 +19,6 @@ export default function Home() {
       </main>
         <Footer />
     </>
+    
   );
 }

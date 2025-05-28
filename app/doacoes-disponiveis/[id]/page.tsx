@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
@@ -31,7 +33,7 @@ export default function DoacaoPage({ params }: Props) {
   const doacao = mockDoacoes.find((d) => d.id === params.id);
 
   if (!doacao) return notFound();
-
+  
   return (
     <div>
       <Navbar />
@@ -82,16 +84,9 @@ export default function DoacaoPage({ params }: Props) {
             </tbody>
           </table>
 
-          <h2 className="font-bold text-lg mt-6">Atingiu o Objetivo?</h2>
-          <div className="mt-2 flex justify-center">
-            <div className="text-center">
-              <div className="w-28 h-28 rounded-full border-4 border-green-500 flex items-center justify-center font-bold text-green-700 text-sm">
-                DOADO!
-              </div>
-              <div className="text-xs text-gray-500 mt-2">
-                Status demonstrativo
-              </div>
-            </div>
+         <div className="flex justify-center pt-2">            
+            <button               
+              className="mt-4 p-4 bg-gray-100 rounded-md text-center bg-green-600 shadow-md hover:bg-green-800 text-white cursor-pointer">Contribuir</button>
           </div>
         </div>
       </div>
