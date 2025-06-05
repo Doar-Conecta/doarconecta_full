@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2";
 import db from "../db";
 import bcrypt from 'bcryptjs'
 
-class UsuarioModel {
+class DoacoesModel {
   // Criar uma nova doação)
   async criarDoacao(doacao:any) {
 
@@ -29,30 +29,23 @@ class UsuarioModel {
     }
   }
 
-  // Verificar a senha do usuário
-  async verificarSenha(usuario:any, senha:any) {
-    const isValid = await bcrypt.compare(senha, usuario.Senha);  // Compara a senha
-    return isValid;
-  }
-
   // Buscar o usuário pelo e-mail
-  async buscarUsuarioPorEmail(email: string) {
+  async buscarDoacoesId(id: number) {
     const [rows] = await db.execute(
-      `SELECT * FROM tblUsuario WHERE Email = ?`,
-      [email]
+      `SELECT * FROM tblDoacoes WHERE id = ?`,
+      [id]
     );
   
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
-      const usuario = rows[0] as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
-      return usuario;
+      const doacoes = rows[0] as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return doacoes;
     }
-  
     return null;  // Se não encontrar o usuário
   }
   
 }
 
-export default new UsuarioModel(); // Exporta uma instância única
+export default new DoacoesModel(); // Exporta uma instância única
 

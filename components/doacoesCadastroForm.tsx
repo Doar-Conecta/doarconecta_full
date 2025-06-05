@@ -192,6 +192,8 @@ const FormularioItem: React.FC = () => {
                                 <option value="alimentos">Alimentos</option>
                                 <option value="brinquedos">Brinquedos</option>
                                 <option value="livros">Livros</option>
+                                <option value="Produtos de Limpeza">Produtos de Limpeza</option>
+                                <option value="Outros">Outros</option>
                             </select>
                         </div>
 
