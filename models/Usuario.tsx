@@ -4,10 +4,10 @@ import bcrypt from 'bcryptjs'
 
 class UsuarioModel {
   // Criar um novo usuário (criptografando a senha)
-  async criarUsuario(usuario:any) {
+  async criarUsuario(usuario: any) {
     const hash = await bcrypt.hash(usuario.Senha, 10);  // Criptografa a senha
     usuario.Senha = hash;
-    
+
     const user = await db.execute(
       `INSERT INTO tblUsuario 
         (TipoUsuario, NomeRazaoSocial, CPFCNPJ, Logradouro, NumeroLogradouro, Complemento, 
@@ -38,7 +38,7 @@ class UsuarioModel {
   }
 
   // Verificar a senha do usuário
-  async verificarSenha(usuario:any, senha:any) {
+  async verificarSenha(usuario: any, senha: any) {
     const isValid = await bcrypt.compare(senha, usuario.Senha);  // Compara a senha
     return isValid;
   }
@@ -49,17 +49,64 @@ class UsuarioModel {
       `SELECT * FROM tblUsuario WHERE Email = ?`,
       [email]
     );
-  
+
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
       const usuario = rows[0] as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
       return usuario;
     }
-  
+
     return null;  // Se não encontrar o usuário
   }
-  
+
+  async buscarUsuarioPorId(id: number) {
+    const [rows] = await db.execute(
+      `SELECT * FROM tblUsuario WHERE id = ?`,
+      [id]
+    );
+
+    // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Forçando a declaração do tipo como RowDataPacket
+      const usuario = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return usuario;
+    }
+
+    return null;  // Se não encontrar o usuário
+  }
+
+  async buscarUsuarioPorTipo(tipo: number) {
+    const [rows] = await db.execute(
+      `SELECT * FROM tblUsuario WHERE TipoUsuario = ?`,
+      [tipo]
+    );
+
+    // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Forçando a declaração do tipo como RowDataPacket
+      const retorno = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return retorno;
+    }
+
+    return null;  // Se não encontrar o usuário
+  }
+
+  async buscarUsuarios() {
+    const [rows] = await db.execute(
+      `SELECT * FROM tblUsuario`
+    );
+
+    // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Forçando a declaração do tipo como RowDataPacket
+      const usuario = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return usuario;
+    }
+
+    return null;  // Se não encontrar o usuário
+  }
+
 }
 
 export default new UsuarioModel(); // Exporta uma instância única

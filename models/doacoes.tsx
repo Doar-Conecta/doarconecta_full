@@ -32,14 +32,41 @@ class DoacoesModel {
   // Buscar o usuário pelo e-mail
   async buscarDoacoesId(id: number) {
     const [rows] = await db.execute(
-      `SELECT * FROM tblDoacoes WHERE id = ?`,
+      `SELECT * FROM tblDoacao WHERE id = ?`,
       [id]
     );
   
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
-      const doacoes = rows[0] as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      const doacoes = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return doacoes;
+    }
+    return null;  // Se não encontrar o usuário
+  }
+
+  async buscarDoacoes() {
+    const [rows] = await db.execute("SELECT * FROM tblDoacao");
+  
+    // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Forçando a declaração do tipo como RowDataPacket
+      const doacoes = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
+      return doacoes;
+    }
+    return null;  // Se não encontrar doações 
+  }
+
+  async buscarDoacoesPoDoador(doadorParam: number) {
+    const [rows] = await db.execute(
+      `SELECT * FROM tblDoacao WHERE Doador = ?`,
+      [doadorParam]
+    );
+  
+    // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Forçando a declaração do tipo como RowDataPacket
+      const doacoes = rows as RowDataPacket;  // 'RowDataPacket' é o tipo correto do MySQL2
       return doacoes;
     }
     return null;  // Se não encontrar o usuário
