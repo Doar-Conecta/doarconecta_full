@@ -1,0 +1,12 @@
+Rotas API:
+
+api/doacoes                     Retorna todas as doações.
+api/doacoes/[id]                Retorna a doação do id informado - ex: api/doacoes/1
+api/logout                      Logout do sistema 
+api/register                    Cadastro de usuário
+api/login                       Login no sistema
+api/doacoes-doador/[doador]     Retorna as doações por doador - ex: api/doacoes-doador/11 (11 é o id do doador)
+api/doacoes-param/[id]          Retorna a doação por id ex: api/doacoes-param/4 (4 é o id da doação)
+api/usuario/usuarios            Retorna todos os usuários cadastrados 
+api/usuario/tipo/[tipo]         Retorna os usuários por tipo ex: api/usuario/tipo/1 - usuário Físicos - api/usuario/tipo/2 - usuários Jurídicos
+api/usuario/usuario/[id]        retorna usuario por id - ex: api/usuario/usuario/11
