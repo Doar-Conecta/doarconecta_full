@@ -41,12 +41,7 @@ export default function DoacaoPage({ params }: Props) {
       <div className="text-sm text-gray-500 mb-2">
         Projetos Sociais • {doacao.localizacao}
       </div>
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{doacao.titulo}</h1>
-        <button className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
-          DOAR AGORA!
-        </button>
-      </div>
+    
 
       <div className="grid md:grid-cols-2 gap-6 mt-6">
         {/* Imagem + Descrição */}

@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.securitySection}>
-          <Image src="/compra-segura.png" alt="Compra 100% Segura" width={150} height={80} />
+          <Image src="/site-seguro.png" alt="Site 100% Segura" width={150} height={80} />
         </div>
       </div>
 

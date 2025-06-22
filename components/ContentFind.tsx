@@ -1,6 +1,13 @@
 import styles from './ContentFind.module.css';
 import Link from 'next/link';
 
+
+const estados = [
+  'Estado','AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+  'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+  'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+];
+
 export default function ContentFind() {
   return (
     <section className={styles.contentFind}>
@@ -23,16 +30,16 @@ export default function ContentFind() {
         <div className={styles.field}>
           <label>Localização</label>
           <select>
-            <option>Estado</option>
-            <option>SP</option>
-            <option>RJ</option>
-            <option>MG</option>
+            {estados.map(estado => (
+              <option key={estado} value={estado}>{estado}</option>
+            ))}
+          
           </select>
         </div>
         <div className={styles.divButton}>
-            <Link href="/doacoes-disponiveis"> <button className={styles.searchButton}>
+          <Link href="/doacoes-disponiveis"> <button className={styles.searchButton}>
             Buscar <span className={styles.icon}>🔍</span>
-            </button></Link>
+          </button></Link>
         </div>
       </div>
     </section>
