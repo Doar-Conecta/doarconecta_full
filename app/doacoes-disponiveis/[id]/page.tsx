@@ -1,91 +1,77 @@
-'use client';
-
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+interface Doacao {
+  id: number;
+  Descricao: string;
+  Categoria: string;
+  Status: string;
+  imagem?: string;
+}
+
 interface Props {
   params: { id: string };
 }
 
-// Mock de dados simulando doações
-const mockDoacoes = [
-  {
-    id: '1',
-    titulo: 'Projeto Família Solidária',
-    localizacao: 'São Paulo',
-    descricao:
-      'Nosso projeto solidário tem a missão de apoiar famílias em situação de vulnerabilidade, proporcionando acesso a alimentos, roupas e materiais essenciais para um recomeço digno. [...]',
-    imagem: '/familia-doar.jpg',
-    necessidades: [
-      { item: 'Roupas Masculinas', qtd: '800 Peças', status: '🟡' },
-      { item: 'Roupas Femininas', qtd: '950 Peças', status: '🟡' },
-      { item: 'Alimento não Perecível', qtd: '1.000 KG', status: '🟢' },
-      { item: 'Produto de Higiene', qtd: '750 Peças', status: '🟢' },
-      { item: 'Brinquedos para Bebê', qtd: '170 Peças', status: '🟠' },
-    ],
-  },
-  // você pode adicionar outros objetos aqui com id '2', '3', etc.
-];
+async function fetchDoacao(id: string): Promise<Doacao | null> {
+  const res = await fetch(`http://localhost:3000/api/doacoes-param/${id}`, {    
+    cache: 'no-store',
+  });
 
-export default function DoacaoPage({ params }: Props) {
-  const doacao = mockDoacoes.find((d) => d.id === params.id);
+  if (!res.ok) {
+    return notFound();
+  }
 
-  if (!doacao) return notFound();
-  
+  const data = await res.json();
+  return data;
+}
+
+export default async function DoacaoPage({ params }: Props) {
+  const id = params.id;
+
+  const doacao = await fetchDoacao(id);
+
+  if (!doacao) {
+    return notFound();
+  }
+
   return (
     <div>
       <Navbar />
-    <main className="p-6 max-w-6xl mx-auto">
-      <div className="text-sm text-gray-500 mb-2">
-        Projetos Sociais • {doacao.localizacao}
-      </div>
-    
-
-      <div className="grid md:grid-cols-2 gap-6 mt-6">
-        {/* Imagem + Descrição */}
-        <div className="bg-white rounded-xl shadow-md p-4">
-          <Image
-            src={doacao.imagem}
-            alt={doacao.titulo}
-            width={600}
-            height={400}
-            className="rounded-md object-cover w-full h-[240px]"
-          />
-          <h2 className="mt-4 font-bold text-lg">Descrição</h2>
-          <p className="text-gray-700 mt-2 text-sm leading-relaxed">{doacao.descricao}</p>
+      <main className="p-6 max-w-6xl mx-auto">
+        <div className="text-sm text-gray-500 mb-2">
+           • SP
         </div>
 
-        {/* Tabela + Status */}
-        <div className="bg-white rounded-xl shadow-md p-4">
-          <h2 className="font-bold text-lg">Necessidade?</h2>
-          <table className="w-full mt-3 text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2">Item</th>
-                <th className="text-center">Qtde.</th>
-                <th className="text-center">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {doacao.necessidades.map((item, i) => (
-                <tr key={i} className="border-b">
-                  <td className="py-2">{item.item}</td>
-                  <td className="text-center">{item.qtd}</td>
-                  <td className="text-center">{item.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid md:grid-cols-2 gap-6 mt-6">
+          {/* Imagem + Descrição */}
+          <div className="bg-white rounded-xl shadow-md p-4">
+            <Image
+              src={doacao.imagem ?? "/produtos/doarConecta.png"}
+              alt={doacao.Descricao}
+              width={600}
+              height={400}
+              className="rounded-md object-cover w-full h-[240px]"
+              priority
+            />
+            <h2 className="mt-4 font-bold text-lg">Descrição</h2>
+            <p className="text-gray-700 mt-2 text-sm leading-relaxed">
+              {doacao.Descricao}
+            </p>
+          </div>
 
-         <div className="flex justify-center pt-2">            
-            <button               
-              className="mt-4 p-4 bg-gray-100 rounded-md text-center bg-green-600 shadow-md hover:bg-green-800 text-white cursor-pointer">Contribuir</button>
+          {/* Tabela + Status */}
+          <div className="bg-white rounded-xl shadow-md p-4">
+            <div className="flex justify-center pt-2">
+              <button className="mt-4 p-4 bg-green-600 hover:bg-green-800 text-white rounded-md shadow-md">
+                Contribuir
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
       <Footer />
     </div>
   );

@@ -1,116 +1,99 @@
-// app/doacoes-disponiveis/page.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DoacaoCard from "@/components/DoacaoCard";
 import ContentFind from "@/components/ContentFind";
 
-interface Produto {
-  id: string;
-  titulo: string;
-  categoria: string;
-  localizacao: string;
-  descricao: string;
-  imagem: string;
+interface Doacao {
+  id: number;
+  Descricao: string;
+  Status: string;
+  Doador: number;
+  Categoria: string;
+  Data_Cadastro: string;
 }
 
-const produtos: Produto[] = [
-  {
-    id: "cama-mesa-banho-pa",
-    titulo: "Cama, Mesa e Banho",
-    categoria: "Têxteis",
-    localizacao: "PA",
-    descricao: "Conjuntos de lençóis, toalhas e cobertores.",
-    imagem: "/produtos/cama-mesa-banho.jpg",
-  },
-  {
-    id: "familia-doar-sp",
-    titulo: "Jogo de Cama, Mesa e Banho",
-    categoria: "Higiene",
-    localizacao: "SP",
-    descricao: "Jogo de cama,mesa e banho disponível para doação.",
-    imagem: "/produtos/cama-mesa-banho.jpg",
-  },
-  {
-    id: "cama-simples-rj",
-    titulo: "Cama Simples",
-    categoria: "Têxteis",
-    localizacao: "RJ",
-    descricao: "Lençóis e fronhas de solteiro.",
-    imagem: "/produtos/cama.jpg",
-  },
-  {
-    id: "eletro-cozinha-ba",
-    titulo: "Kit Eletro Cozinha",
-    categoria: "Eletrodomésticos",
-    localizacao: "BA",
-    descricao: "Liquidificador, batedeira e mixer.",
-    imagem: "/produtos/eletrodomesticos-cozinha.jpg",
-  },
-  {
-    id: "eletro-geral-sc",
-    titulo: "Eletrodomésticos Gerais",
-    categoria: "Eletrodomésticos",
-    localizacao: "SC",
-    descricao: "Ventilador, ferro de passar e secador.",
-    imagem: "/produtos/eletrodomesticos.jpg",
-  },
-  {
-    id: "banner-image-mg",
-    titulo: "Banner Promocional",
-    categoria: "Marketing",
-    localizacao: "MG",
-    descricao: "Geladeira disponível para doação.",
-    imagem: "/produtos/eletrodomesticos.jpg",
-  },
-  {
-    id: "familia-doar-sp-2",
-    titulo: "Jogo de Lençóis",
-    categoria: "Higiene",
-    localizacao: "SP",
-    descricao: "Cama disponível para doação.",
-    imagem: "/produtos/cama.jpg",
-  },
-  {
-    id: "cama-simples-mg",
-    titulo: "Cama Simples",
-    categoria: "Têxteis",
-    localizacao: "MG",
-    descricao: "Lençóis e fronhas de casal.",
-    imagem: "/produtos/cama.jpg",
-  },
-];
+function getImagemPorCategoria(categoria: string): string {
+  switch (categoria.toLowerCase()) {
+
+    case "eletronicos":
+      return "/produtos/eletrodomesticos.jpg";
+
+    case "moveis":
+      return "/produtos/cama-mesa-banho.jpg";
+
+    case "roupas":
+      return "/produtos/eletrodomesticos.jpg";
+
+    case "alimentos":
+      return "/produtos/banner.jpg";
+
+    case "brinquedos":
+      return "/produtos/brinquedos.jpg"
+
+    case "livros":
+      return "/produtos/livros.jpg"
+
+    case "produtos de limpeza":
+      return "/produtos/produtoLimpeza.png"
+
+    default:
+      return "/produtos/doarConecta.png";
+  }
+}
 
 export default function DoacoesDisponiveis() {
+  const [doacoes, setDoacoes] = useState<Doacao[]>([]);
+
+  useEffect(() => {
+    const fetchDoacoes = async () => {
+      try {
+        const res = await fetch("/api/doacoes");
+        const data = await res.json();
+        setDoacoes(data || []);
+      } catch (error) {
+        console.error("Erro ao carregar doações:", error);
+        setDoacoes([]);
+      }
+    };
+
+    fetchDoacoes();
+  }, []);
+
   return (
     <>
       <Navbar />
       <ContentFind />
 
       <main className="wrapper py-10 px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {produtos.map((prod) => (
-            <Link
-              key={prod.id}
-              href="/doacoes-disponiveis/1"
-              className="block hover:shadow-lg transition-shadow"
-            >
-              <DoacaoCard
-                id={prod.id}
-                titulo={prod.titulo}
-                categoria={prod.categoria}
-                localizacao={prod.localizacao}
-                descricao={prod.descricao}
-                imagem={prod.imagem}
-              />
-            </Link>
-          ))}
-        </div>
-      </main>
-
+        {doacoes.length === 0 ? (
+          <div className="text-center text-gray-500 text-lg">
+            Nenhuma doação encontrada na base de dados!
+          </div>) : 
+          (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {doacoes.map((doacao) => (
+              <Link
+                key={doacao.id}
+                href={`/doacoes-disponiveis/${doacao.id}`}
+                className="block hover:shadow-lg transition-shadow"
+              >
+                <DoacaoCard
+                  id={String(doacao.id)}
+                  titulo={doacao.Descricao}
+                  categoria={doacao.Categoria.toUpperCase()}
+                  localizacao="SP" // Mockado para SP feat futura 
+                  descricao={doacao.Status.toUpperCase()}
+                  imagem={getImagemPorCategoria(doacao.Categoria.toLocaleLowerCase())}
+                />
+              </Link>
+            ))}
+          </div>
+          )}
+        </main>
       <Footer />
     </>
   );
