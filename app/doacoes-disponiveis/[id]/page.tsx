@@ -1,78 +1,60 @@
-import Image from 'next/image';
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+import { useParams } from "next/navigation";
+
 interface Doacao {
   id: number;
   Descricao: string;
-  Categoria: string;
   Status: string;
-  imagem?: string;
+  Doador: number;
+  Categoria: string;
+  Data_Cadastro: string;
 }
 
-interface Props {
-  params: { id: string };
-}
+export default function DoacaoDetalhes() {
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const [doacao, setDoacao] = useState<Doacao | undefined>();
 
-async function fetchDoacao(id: string): Promise<Doacao | null> {
-  const res = await fetch(`http://localhost:3000/api/doacoes-param/${id}`, {    
-    cache: 'no-store',
-  });
+  useEffect(() => {
+    const fetchDoacoes = async () => {
+      try {
+        const res = await fetch(`/api/doacoes-param/${id}`);
+        const data = await res.json();
 
-  if (!res.ok) {
-    return notFound();
-  }
+        console.log("Resposta da API:", data);
 
-  const data = await res.json();
-  return data;
-}
+        // Correção principal aqui
+        setDoacao(Array.isArray(data) ? data[0] : data ?? undefined);
+      } catch (error) {
+        console.error("Erro ao carregar doações:", error);
+      }
+    };
 
-export default async function DoacaoPage({ params }: Props) {
-  const id = params.id;
+    if (id) fetchDoacoes();
+  }, [id]);
 
-  const doacao = await fetchDoacao(id);
-
-  if (!doacao) {
-    return notFound();
-  }
+  if (!doacao) return <p className="text-center mt-10">Carregando ou doação não encontrada.</p>;
 
   return (
-    <div>
+    <>
       <Navbar />
-      <main className="p-6 max-w-6xl mx-auto">
-        <div className="text-sm text-gray-500 mb-2">
-           • SP
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          {/* Imagem + Descrição */}
-          <div className="bg-white rounded-xl shadow-md p-4">
-            <Image
-              src={doacao.imagem ?? "/produtos/doarConecta.png"}
-              alt={doacao.Descricao}
-              width={600}
-              height={400}
-              className="rounded-md object-cover w-full h-[240px]"
-              priority
-            />
-            <h2 className="mt-4 font-bold text-lg">Descrição</h2>
-            <p className="text-gray-700 mt-2 text-sm leading-relaxed">
-              {doacao.Descricao}
-            </p>
-          </div>
-
-          {/* Tabela + Status */}
-          <div className="bg-white rounded-xl shadow-md p-4">
-            <div className="flex justify-center pt-2">
-              <button className="mt-4 p-4 bg-green-600 hover:bg-green-800 text-white rounded-md shadow-md">
-                Contribuir
-              </button>
-            </div>
-          </div>
-        </div>
+      <main className="p-8 max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4">Detalhes da Doação</h1>
+        <p className="text-xl">ID da doação: {id}</p>
+        <p className="mt-6 text-gray-700">
+          Categoria: <strong>{doacao.Categoria}</strong><br />
+          Descrição: <strong>{doacao.Descricao}</strong>
+        </p>
       </main>
+
       <Footer />
-    </div>
+    </>
   );
 }
