@@ -28,8 +28,7 @@ export default function DoacaoDetalhes() {
         const data = await res.json();
 
         console.log("Resposta da API:", data);
-
-        // Correção principal aqui
+        
         setDoacao(Array.isArray(data) ? data[0] : data ?? undefined);
       } catch (error) {
         console.error("Erro ao carregar doações:", error);
