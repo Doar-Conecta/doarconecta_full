@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { notFound } from 'next/navigation';
+import Image from "next/image";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
 import { useParams } from "next/navigation";
 
 interface Doacao {
@@ -14,6 +14,19 @@ interface Doacao {
   Doador: number;
   Categoria: string;
   Data_Cadastro: string;
+}
+
+function getImagemPorCategoria(categoria: string): string {
+  switch (categoria.toLowerCase()) {
+    case "eletronicos": return "/produtos/eletrodomesticos.jpg";
+    case "moveis": return "/produtos/cama-mesa-banho.jpg";
+    case "roupas": return "/produtos/eletrodomesticos.jpg";
+    case "alimentos": return "/produtos/banner.jpg";
+    case "brinquedos": return "/produtos/brinquedos.jpg";
+    case "livros": return "/produtos/livros.jpg";
+    case "produtos de limpeza": return "/produtos/produtoLimpeza.png";
+    default: return "/produtos/doarConecta.png";
+  }
 }
 
 export default function DoacaoDetalhes() {
@@ -26,9 +39,6 @@ export default function DoacaoDetalhes() {
       try {
         const res = await fetch(`/api/doacoes-param/${id}`);
         const data = await res.json();
-
-        console.log("Resposta da API:", data);
-        
         setDoacao(Array.isArray(data) ? data[0] : data ?? undefined);
       } catch (error) {
         console.error("Erro ao carregar doações:", error);
@@ -43,16 +53,54 @@ export default function DoacaoDetalhes() {
   return (
     <>
       <Navbar />
+      <main className="p-6 max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center">Detalhes da Doação</h1>
+        <div className="text-sm text-gray-500 mb-2 flex justify-center">
+              DoarConecta • SP
+        </div>
 
-      <main className="p-8 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">Detalhes da Doação</h1>
-        <p className="text-xl">ID da doação: {id}</p>
-        <p className="mt-6 text-gray-700">
-          Categoria: <strong>{doacao.Categoria}</strong><br />
-          Descrição: <strong>{doacao.Descricao}</strong>
-        </p>
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6">
+          <Image
+            src={getImagemPorCategoria(doacao.Categoria.toLowerCase())}
+            alt={`Imagem da categoria ${doacao.Categoria}`}
+            width={800}
+            height={400}
+            className="rounded-md object-cover w-full mb-4"
+          />
+
+          <div className="text-lg text-gray-800 mb-4">
+            <div className="flex items-center gap-2">
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Categoria:</strong>
+              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">{doacao.Categoria.toUpperCase()}
+              </strong>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Descrição:</strong> 
+              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">{doacao.Descricao}</strong>
+            </div>
+            
+            <div className="flex items-center pt-2 gap-2">
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Status:</strong> 
+              <strong className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
+                ${doacao.Status === "disponivel" ? "bg-green-200 border-green-300 text-green-800" : "bg-red-100 border-red-300 text-red-800"}`}>
+                {doacao.Status.toLocaleUpperCase()}</strong>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+                <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Data de Cadastro:</strong> 
+                <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                  {new Date(doacao.Data_Cadastro).toLocaleDateString()}
+                </strong>
+            </div>        
+          </div>
+          <div className="flex justify-center">
+            <button className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200">
+              Aceitar Doação
+            </button>
+          </div>
+        </div>
       </main>
-
       <Footer />
     </>
   );

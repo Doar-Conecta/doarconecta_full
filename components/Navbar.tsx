@@ -12,7 +12,8 @@ export default function Navbar() {
     { name: 'Início', href: '/' },
     { name: 'Quem somos', href: '/quemsomos' },
     { name: 'Doações Disponíveis', href: '/doacoes-disponiveis' },
-    { name: 'Minhas Doações', href: '/doacoes' },
+    { name: 'Minhas Doações', href: '/minhas-doacoes' },
+    { name: 'Nova Doação', href: '/doacoes' },
   ];
 
   return (
