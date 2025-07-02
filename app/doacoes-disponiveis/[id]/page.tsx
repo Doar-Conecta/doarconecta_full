@@ -29,6 +29,22 @@ function getImagemPorCategoria(categoria: string): string {
   }
 }
 
+async function enviarPendencia(id: number) {
+  try {
+    const res = await fetch(`/api/doacoes-param/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data = await res.json();
+    alert(data.message || "Status alterado!");
+  } catch (error) {
+    console.error("Erro ao enviar pendência:", error);
+  }
+}
+
 export default function DoacaoDetalhes() {
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
@@ -95,7 +111,8 @@ export default function DoacaoDetalhes() {
             </div>        
           </div>
           <div className="flex justify-center">
-            <button className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200">
+            <button className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200" 
+            onClick={() => enviarPendencia(doacao.id)}>
               Aceitar Doação
             </button>
           </div>

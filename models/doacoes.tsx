@@ -1,13 +1,13 @@
-import { RowDataPacket } from "mysql2";
+import { RowDataPacket, ResultSetHeader } from "mysql2";
 import db from "../db";
 import bcrypt from 'bcryptjs'
 
 class DoacoesModel {
   // Criar uma nova doação)
-  async criarDoacao(doacao:any) {
+  async criarDoacao(doacao: any) {
 
     console.log("doacao " + doacao.Descricao, doacao.status, doacao.categoria, doacao.doador, doacao.Data_Cadastro);
-    
+
     const insereDoacao = await db.execute(
       `INSERT INTO tbldoacao (Descricao, Status, Doador, Categoria, Data_Cadastro)
        
@@ -19,7 +19,7 @@ class DoacoesModel {
         doacao.Doador,
         doacao.Categoria,
         doacao.Data_Cadastro
-        
+
       ]
     );
     if (Array.isArray(insereDoacao) && insereDoacao.length > 0) {
@@ -35,7 +35,7 @@ class DoacoesModel {
       `SELECT * FROM tblDoacao WHERE id = ?`,
       [id]
     );
-  
+
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
@@ -47,7 +47,7 @@ class DoacoesModel {
 
   async buscarDoacoes() {
     const [rows] = await db.execute("SELECT * FROM tblDoacao");
-  
+
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
@@ -62,7 +62,7 @@ class DoacoesModel {
       `SELECT * FROM tblDoacao WHERE Doador = ?`,
       [doadorParam]
     );
-  
+
     // Verifique se rows é um array e tem pelo menos 1 item (usuário encontrado)
     if (Array.isArray(rows) && rows.length > 0) {
       // Forçando a declaração do tipo como RowDataPacket
@@ -71,7 +71,18 @@ class DoacoesModel {
     }
     return null;  // Se não encontrar o usuário
   }
-  
+
+  async alterarDoacaoPendente(id: number) {
+    const [rows] = await db.execute<ResultSetHeader>(
+      `UPDATE tbldoacao SET Status = "Em Analise" WHERE id = ?`,
+      [id]
+    )
+    if (rows.affectedRows > 0) {
+      return { sucesso: true, mensagem: "Status atualizado com sucesso." };
+    } else {
+      return { sucesso: false, mensagem: "Nenhuma doação atualizada. ID pode estar incorreto." };
+    }
+  }
 }
 
 export default new DoacoesModel(); // Exporta uma instância única

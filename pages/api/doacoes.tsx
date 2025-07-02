@@ -2,13 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import DoacoesModel from "../../models/doacoes";
 import jwt from 'jsonwebtoken';
 import nookies from 'nookies';
+import doacoes from '../../models/doacoes';
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         try {
             // Recebe os dados do corpo da requisição
             const doacaoData = req.body;
-            const cookieValor = nookies.get({req}).doador;
+            const cookieValor = nookies.get({ req }).doador;
             doacaoData.Doador = cookieValor;
             console.log('Cadastrando Doações: ', JSON.stringify(doacaoData));
 
@@ -21,13 +22,12 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
             console.error('Erro ao Cadastrar doação:', error);
             return res.status(400).json({ message: 'Erro no cadastro da doação' });
         }
-    } else if(req.method === 'GET'){
+    } else if (req.method === 'GET') {
         console.log("Buca");
         let doacoes = await DoacoesModel.buscarDoacoes();
-         return res.status(200).json(doacoes);
-    }else{
+        return res.status(200).json(doacoes);
+    } else {
         return res.status(405).json({ message: 'Método não permitido' });
-
     }
 };
 
