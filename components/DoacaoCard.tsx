@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 interface DoacaoCardProps {
   id: string;
@@ -21,19 +21,20 @@ export default function DoacaoCard({
   imagem,
 }: DoacaoCardProps) {
   return (
-    <Link href={`/doacoes-disponiveis/${id}`}>
+    <a href={`/doacoes-disponiveis/${id}`}>
       <div className="rounded-xl shadow-md overflow-hidden max-w-xs bg-white hover:shadow-lg transition-shadow duration-200 cursor-pointer">
         <div className="relative w-full h-48">
           <Image src={imagem} alt={titulo} fill className="object-cover" />
         </div>
         <div className="p-4">
           <h3 className="font-semibold text-md">{titulo}</h3>
-          <p className="text-sm text-gray-600">{categoria} • {localizacao}</p>
+          <p className="text-sm text-gray-600">
+            {categoria} • {localizacao}
+          </p>
           <p className="text-sm text-gray-700 mt-2 line-clamp-4">{descricao}</p>
-          <div className="flex justify-end mt-3">
-          </div>
+          <div className="flex justify-end mt-3"></div>
         </div>
       </div>
-    </Link>
+    </a>
   );
 }

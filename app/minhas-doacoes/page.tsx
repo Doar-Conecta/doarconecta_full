@@ -5,14 +5,14 @@ import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import DoacaoCard from "@/components/DoacaoCard";
 
-interface MinhasDoacoes {
+type MinhasDoacoes = {
   id: number;
   Descricao: string;
   Status: string;
   Doador: number;
   Categoria: string;
   Data_Cadastro: string;
-}
+};
 
 function getImagemPorCategoria(categoria: string): string {
   switch (categoria.toLowerCase()) {
@@ -20,10 +20,10 @@ function getImagemPorCategoria(categoria: string): string {
       return "/produtos/eletrodomesticos.jpg";
 
     case "moveis":
-      return "/produtos/cama-mesa-banho.jpg";
+      return "/produtos/moveis.jpg";
 
     case "roupas":
-      return "/produtos/eletrodomesticos.jpg";
+      return "/produtos/cama-mesa-banho.jpg";
 
     case "alimentos":
       return "/produtos/banner.jpg";
@@ -44,28 +44,38 @@ function getImagemPorCategoria(categoria: string): string {
 
 export default function MinhasDoacoes() {
   const [doacao, setDoacao] = useState<MinhasDoacoes[]>([]);
-
-  const cookies = document.cookie.split("; ");
-  const doadorCookie = cookies.find((c) => c.startsWith("doador="));
-  const doadorId = doadorCookie?.split("=")[1];
-
-  if (!doadorId) {
-    console.warn("ID do doador não encontrado no cookie.");
-    return;
-  }
+  const [doadorId, setDoadorId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Este código roda apenas no cliente
+    const cookies = document.cookie.split("; ");
+    const doadorCookie = cookies.find((c) => c.startsWith("doador="));
+    const id = doadorCookie?.split("=")[1];
+
+    if (!id) {
+      console.warn("ID do doador não encontrado no cookie.");
+      return;
+    }
+
+    setDoadorId(id);
+  }, []);
+
+  useEffect(() => {
+    if (!doadorId) return;
+
     const fetchDoacoes = async () => {
       try {
-        const res = await fetch(`api/doacoes-doador/${doadorId}`);
-        setDoacao(await res.json());
+        const res = await fetch(`/api/doacoes-doador/${doadorId}`);
+        const data = await res.json();
+        setDoacao(data);
       } catch (error) {
         console.error("Erro ao obter valores", error);
         setDoacao([]);
       }
     };
+
     fetchDoacoes();
-  }, []);
+  }, [doadorId]);
 
   return (
     <>
@@ -80,14 +90,13 @@ export default function MinhasDoacoes() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {doacao.map((doacao) => (
               <DoacaoCard
+                key={doacao.id}
                 id={String(doacao.id)}
                 titulo={doacao.Descricao}
                 categoria={doacao.Categoria.toUpperCase()}
-                localizacao="SP" // Mockado para SP feat futura
+                localizacao="SP"
                 descricao={doacao.Status.toUpperCase()}
-                imagem={getImagemPorCategoria(
-                  doacao.Categoria.toLocaleLowerCase()
-                )}
+                imagem={getImagemPorCategoria(doacao.Categoria.toLowerCase())}
               />
             ))}
           </div>

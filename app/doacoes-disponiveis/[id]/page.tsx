@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 import Image from "next/image";
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useParams } from "next/navigation";
 
 interface Doacao {
@@ -18,14 +18,22 @@ interface Doacao {
 
 function getImagemPorCategoria(categoria: string): string {
   switch (categoria.toLowerCase()) {
-    case "eletronicos": return "/produtos/eletrodomesticos.jpg";
-    case "moveis": return "/produtos/cama-mesa-banho.jpg";
-    case "roupas": return "/produtos/eletrodomesticos.jpg";
-    case "alimentos": return "/produtos/banner.jpg";
-    case "brinquedos": return "/produtos/brinquedos.jpg";
-    case "livros": return "/produtos/livros.jpg";
-    case "produtos de limpeza": return "/produtos/produtoLimpeza.png";
-    default: return "/produtos/doarConecta.png";
+    case "eletronicos":
+      return "/produtos/eletrodomesticos.jpg";
+    case "moveis":
+      return "/produtos/moveis.jpg";
+    case "roupas":
+      return "/produtos/eletrodomesticos.jpg";
+    case "alimentos":
+      return "/produtos/banner.jpg";
+    case "brinquedos":
+      return "/produtos/brinquedos.jpg";
+    case "livros":
+      return "/produtos/livros.jpg";
+    case "produtos de limpeza":
+      return "/produtos/produtoLimpeza.png";
+    default:
+      return "/produtos/doarConecta.png";
   }
 }
 
@@ -34,8 +42,8 @@ async function enviarPendencia(id: number) {
     const res = await fetch(`/api/doacoes-param/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await res.json();
@@ -64,15 +72,20 @@ export default function DoacaoDetalhes() {
     if (id) fetchDoacoes();
   }, [id]);
 
-  if (!doacao) return <p className="text-center mt-10">Carregando ou doação não encontrada.</p>;
+  if (!doacao)
+    return (
+      <p className="text-center mt-10">Carregando ou doação não encontrada.</p>
+    );
 
   return (
     <>
       <Navbar />
       <main className="p-6 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-center">Detalhes da Doação</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Detalhes da Doação
+        </h1>
         <div className="text-sm text-gray-500 mb-2 flex justify-center">
-              DoarConecta • SP
+          DoarConecta • SP
         </div>
 
         <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6">
@@ -86,33 +99,53 @@ export default function DoacaoDetalhes() {
 
           <div className="text-lg text-gray-800 mb-4">
             <div className="flex items-center gap-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Categoria:</strong>
-              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">{doacao.Categoria.toUpperCase()}
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                Categoria:
+              </strong>
+              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                {doacao.Categoria.toUpperCase()}
               </strong>
             </div>
 
             <div className="flex items-center gap-2 pt-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Descrição:</strong> 
-              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">{doacao.Descricao}</strong>
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                Descrição:
+              </strong>
+              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                {doacao.Descricao}
+              </strong>
             </div>
-            
+
             <div className="flex items-center pt-2 gap-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Status:</strong> 
-              <strong className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
-                ${doacao.Status === "disponivel" ? "bg-green-200 border-green-300 text-green-800" : "bg-red-100 border-red-300 text-red-800"}`}>
-                {doacao.Status.toLocaleUpperCase()}</strong>
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                Status:
+              </strong>
+              <strong
+                className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
+                ${
+                  doacao.Status === "disponivel"
+                    ? "bg-green-200 border-green-300 text-green-800"
+                    : "bg-red-100 border-red-300 text-red-800"
+                }`}
+              >
+                {doacao.Status.toLocaleUpperCase()}
+              </strong>
             </div>
 
             <div className="flex items-center gap-2 pt-2">
-                <strong className="bg-green-600 text-white px-2 rounded-md font-bold">Data de Cadastro:</strong> 
-                <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
-                  {new Date(doacao.Data_Cadastro).toLocaleDateString()}
-                </strong>
-            </div>        
+              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                Data de Cadastro:
+              </strong>
+              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                {new Date(doacao.Data_Cadastro).toLocaleDateString()}
+              </strong>
+            </div>
           </div>
           <div className="flex justify-center">
-            <button className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200" 
-            onClick={() => enviarPendencia(doacao.id)}>
+            <button
+              className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200"
+              onClick={() => enviarPendencia(doacao.id)}
+            >
               Aceitar Doação
             </button>
           </div>

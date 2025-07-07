@@ -18,12 +18,11 @@ interface Doacao {
 
 function getImagemPorCategoria(categoria: string): string {
   switch (categoria.toLowerCase()) {
-
     case "eletronicos":
       return "/produtos/eletrodomesticos.jpg";
 
     case "moveis":
-      return "/produtos/cama-mesa-banho.jpg";
+      return "/produtos/moveis.jpg";
 
     case "roupas":
       return "/produtos/eletrodomesticos.jpg";
@@ -32,13 +31,13 @@ function getImagemPorCategoria(categoria: string): string {
       return "/produtos/banner.jpg";
 
     case "brinquedos":
-      return "/produtos/brinquedos.jpg"
+      return "/produtos/brinquedos.jpg";
 
     case "livros":
-      return "/produtos/livros.jpg"
+      return "/produtos/livros.jpg";
 
     case "produtos de limpeza":
-      return "/produtos/produtoLimpeza.png"
+      return "/produtos/produtoLimpeza.png";
 
     default:
       return "/produtos/doarConecta.png";
@@ -72,8 +71,8 @@ export default function DoacoesDisponiveis() {
         {doacoes.length === 0 ? (
           <div className="text-center text-gray-500 text-lg">
             Nenhuma doação encontrada na base de dados!
-          </div>) : 
-          (
+          </div>
+        ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {doacoes.map((doacao) => (
               <Link
@@ -85,15 +84,17 @@ export default function DoacoesDisponiveis() {
                   id={String(doacao.id)}
                   titulo={doacao.Descricao}
                   categoria={doacao.Categoria.toUpperCase()}
-                  localizacao="SP" // Mockado para SP feat futura 
+                  localizacao="SP" // Mockado para SP feat futura
                   descricao={doacao.Status.toUpperCase()}
-                  imagem={getImagemPorCategoria(doacao.Categoria.toLocaleLowerCase())}
+                  imagem={getImagemPorCategoria(
+                    doacao.Categoria.toLocaleLowerCase()
+                  )}
                 />
               </Link>
             ))}
           </div>
-          )}
-        </main>
+        )}
+      </main>
       <Footer />
     </>
   );
