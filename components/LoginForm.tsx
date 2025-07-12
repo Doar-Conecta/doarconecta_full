@@ -23,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     <div className="relative flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       
       {/* 1) Logo clicável no canto superior direito */}
-      <div className="absolute top-4 left-10">
+      <div className="absolute top-4 left-10 d-none">
         <Link href="/">
           <img src="/doarconecta-logo.png" alt="Home" className="h-15 w-auto" />
         </Link>

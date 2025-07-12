@@ -1,6 +1,8 @@
 'use client'
 import React from 'react';
 import LoginForm from '../../components/LoginForm';
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const Login = () => {
   const handleSubmit = async (email: string, senha: string) => {
@@ -26,8 +28,10 @@ const Login = () => {
 
   return (
     <div>
+      <Navbar />
       
       <LoginForm onSubmit={handleSubmit} />
+      <Footer />
     </div>
   );
 };

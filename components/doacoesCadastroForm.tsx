@@ -134,7 +134,7 @@ const FormularioItem: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-blue-600 px-6 py-8 text-center">
           <h2 className="text-3xl font-extrabold text-white">
@@ -235,7 +235,7 @@ const FormularioItem: React.FC = () => {
                 Selecione a data e hora de cadastro.
               </p>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 d-none">
               <label
                 htmlFor="Foto"
                 className="block text-lg font-semibold text-gray-700"

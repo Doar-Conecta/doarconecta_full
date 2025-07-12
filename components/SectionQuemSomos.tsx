@@ -14,13 +14,13 @@ export default function SectionQuemSomos() {
           Quanto mais Doações, maiores chances de aparecerem aqui.
         </p>
         <div className={styles.buttons}>
-          <Link href="/doacoes">
+          <Link href="/doacoes-disponiveis">
             <button className={styles.outlined}>Veja as ONGs mais amadas</button>
           </Link>
-          <Link href="/">
+          <Link href="/doacoes-disponiveis">
             <button className={styles.filled}>Itens & ONGs</button>
           </Link>
-          <Link href="/">
+          <Link href="/doacoes">
             <button className={styles.filled}>Novo Doador!</button>
           </Link>
         </div>

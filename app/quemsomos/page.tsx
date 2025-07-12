@@ -3,11 +3,24 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function QuemSomos() {
   return (
     <>
       <Navbar />
+
+      <div className="bg-gray-100 py-6">
+        <div className="wrapper">
+          <Breadcrumb
+            items={[
+              { label: 'Início', href: '/' },
+              { label: 'Quem Somos' }
+            ]}
+          />
+          <h1 className="text-2xl font-bold">Quem Somos</h1>
+        </div>
+      </div>
       <main className="max-w-5xl mx-auto px-4 py-12 text-gray-800 wrapper">
         <h1 className="text-3xl md:text-4xl font-bold text-center mb-10">
           Quem é a DOAR CONECTA?

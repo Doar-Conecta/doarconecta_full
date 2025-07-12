@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DoacaoCard from "@/components/DoacaoCard";
 import ContentFind from "@/components/ContentFind";
+import Breadcrumb from '@/components/Breadcrumb';
 
 interface Doacao {
   id: number;
@@ -65,7 +66,19 @@ export default function DoacoesDisponiveis() {
   return (
     <>
       <Navbar />
-      <ContentFind />
+      {/* <ContentFind /> */}
+
+      <div className="bg-gray-100 py-6">
+        <div className="wrapper">
+          <Breadcrumb
+            items={[
+              { label: 'Início', href: '/' },
+              { label: 'Doações Disponíveis' }
+            ]}
+          />
+          <h1 className="text-2xl font-bold">Doações Disponíveis</h1>
+        </div>
+      </div>
 
       <main className="wrapper py-10 px-4">
         {doacoes.length === 0 ? (

@@ -9,7 +9,7 @@ export default function BannerHome() {
         <h1>Com caridade o pobre é rico, sem caridade o rico é pobre.</h1>
         <p>-Santo Agostinho</p>
         <div className={styles.buttonontainer}>
-            <Link href="/doacoes">
+            <Link href="/doacoes-disponiveis">
                 <button className={styles.BannerButton1}>Mais Adoradas</button>
             </Link>
             <Link href="/doacoes">
