@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import MinhaDoacaoCard from "@/components/MinhaDoacaoCard";
 import styles from '@/components/ContentFind.module.css';
 import Breadcrumb from '@/components/Breadcrumb';
+import { useParams } from "next/navigation";
 
 interface MinhasDoacoes {
   id: number;
@@ -23,7 +24,7 @@ function getImagemPorCategoria(categoria: string): string {
     case "moveis":
       return "/produtos/moveis.jpg";
     case "roupas":
-      return "/produtos/eletrodomesticos.jpg";
+      return "/produtos/cama-mesa-banho.jpg";
     case "alimentos":
       return "/produtos/banner.jpg";
     case "brinquedos":
@@ -40,12 +41,14 @@ function getImagemPorCategoria(categoria: string): string {
 export default function MinhasDoacoes() {
   const [filtro, setFiltro] = useState<'todos' | 'disponiveis' | 'em_analise'>('todos');
   const [modalAberto, setModalAberto] = useState(false);
-  const [doacaoSelecionada, setDoacaoSelecionada] = useState<MinhasDoacoes | null>(null);
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const [doacaoSelecionada, setDoacaoSelecionada] = useState<MinhasDoacoes | undefined>();
   const [imagemSelecionada, setImagemSelecionada] = useState<string>("");
   const [doacoes, setDoacoes] = useState<MinhasDoacoes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  let doadorId = "8";
+  let doadorId = 8;
   if (typeof window !== 'undefined') {
     const cookies = document.cookie.split("; ");
     const doadorCookie = cookies.find(c => c.startsWith("doador="));
@@ -82,12 +85,14 @@ export default function MinhasDoacoes() {
 
   const fecharModal = () => {
     setModalAberto(false);
-    setDoacaoSelecionada(null);
+    setDoacaoSelecionada(undefined);
   };
 
-  const handleConfirmacaoSim = () => {
+  async function handleConfirmacaoSim(id: number) {
     if (doacaoSelecionada) {
       // Você pode adicionar chamada PATCH aqui para atualizar o backend, depois atualizar localmente
+      atualizarStatus(id);
+
       const atualizadas = doacoes.map(d =>
         d.id === doacaoSelecionada.id
           ? { ...d, Status: "Concluido" }
@@ -97,6 +102,22 @@ export default function MinhasDoacoes() {
     }
     fecharModal();
   };
+
+  async function atualizarStatus(id: number) {
+    try {
+      const res = await fetch(`/api/doacoes-param/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      alert(data.message || "Status alterado!");
+    } catch (error) {
+      console.error("Erro ao atualizar o status da doação:", error);
+    }
+  }
 
   const doacoesFiltradas = doacoes.filter((d) => {
     if (filtro === 'todos') return true;
@@ -124,25 +145,22 @@ export default function MinhasDoacoes() {
       <div className="wrapper py-4 flex gap-4">
         <button
           onClick={() => setFiltro('todos')}
-          className={`px-4 py-2 rounded ${
-            filtro === 'todos' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={`px-4 py-2 rounded ${filtro === 'todos' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
         >
           Todos ({doacoes.length})
         </button>
         <button
           onClick={() => setFiltro('disponiveis')}
-          className={`px-4 py-2 rounded ${
-            filtro === 'disponiveis' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={`px-4 py-2 rounded ${filtro === 'disponiveis' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
         >
           Disponíveis ({doacoes.filter(d => d.Status.toLowerCase() === 'disponivel').length})
         </button>
         <button
           onClick={() => setFiltro('em_analise')}
-          className={`px-4 py-2 rounded ${
-            filtro === 'em_analise' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={`px-4 py-2 rounded ${filtro === 'em_analise' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
         >
           Em Análise ({doacoes.filter(d => d.Status.toLowerCase() === 'em analise' || d.Status.toLowerCase() === 'em análise').length})
         </button>
@@ -200,7 +218,7 @@ export default function MinhasDoacoes() {
                   <p className="mb-2 font-medium">O item já foi doado?</p>
                   <div className="flex gap-4">
                     <button
-                      onClick={handleConfirmacaoSim}
+                      onClick={() => handleConfirmacaoSim(doacaoSelecionada.id)}
                       className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                       Sim

@@ -26,7 +26,7 @@ function getImagemPorCategoria(categoria: string): string {
       return "/produtos/moveis.jpg";
 
     case "roupas":
-      return "/produtos/eletrodomesticos.jpg";
+      return "/produtos/cama-mesa-banho.jpg";
 
     case "alimentos":
       return "/produtos/banner.jpg";

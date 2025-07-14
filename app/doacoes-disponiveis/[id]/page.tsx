@@ -23,7 +23,7 @@ function getImagemPorCategoria(categoria: string): string {
     case "moveis":
       return "/produtos/moveis.jpg";
     case "roupas":
-      return "/produtos/eletrodomesticos.jpg";
+      return "/produtos/cama-mesa-banho.jpg";
     case "alimentos":
       return "/produtos/banner.jpg";
     case "brinquedos":
@@ -122,11 +122,10 @@ export default function DoacaoDetalhes() {
               </strong>
               <strong
                 className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
-                ${
-                  doacao.Status === "disponivel"
+                ${doacao.Status === "disponivel"
                     ? "bg-green-200 border-green-300 text-green-800"
                     : "bg-red-100 border-red-300 text-red-800"
-                }`}
+                  }`}
               >
                 {doacao.Status.toLocaleUpperCase()}
               </strong>

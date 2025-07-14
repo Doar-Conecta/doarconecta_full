@@ -45,6 +45,22 @@ class DoacoesModel {
     return null;  // Se não encontrar o usuário
   }
 
+  //busca o status de uma doação para validação da atualização
+  async buscarDoacaoStatusId(id: number): Promise<string | null> {
+    const [rows] = await db.execute<RowDataPacket[]>(
+      `SELECT status FROM tblDoacao WHERE id = ?`,
+      [id]
+    );
+
+    if (rows.length > 0) {
+      const statusDoacao = rows[0].status as string;
+      console.log(statusDoacao);
+      return statusDoacao;
+    }
+
+    return null;
+  }
+
   async buscarDoacoes() {
     const [rows] = await db.execute("SELECT * FROM tblDoacao");
 
@@ -78,7 +94,19 @@ class DoacoesModel {
       [id]
     )
     if (rows.affectedRows > 0) {
-      return { sucesso: true, mensagem: "Status atualizado com sucesso." };
+      return { sucesso: true, mensagem: "Status atualizado para 'Em Analise' com sucesso." };
+    } else {
+      return { sucesso: false, mensagem: "Nenhuma doação atualizada. ID pode estar incorreto." };
+    }
+  }
+
+  async alterarDoacaoConcluido(id: number) {
+    const [rows] = await db.execute<ResultSetHeader>(
+      `UPDATE tbldoacao SET Status = "Concluido" WHERE id = ?`,
+      [id]
+    )
+    if (rows.affectedRows > 0) {
+      return { sucesso: true, mensagem: "Status atualizado para 'concluido' com sucesso." };
     } else {
       return { sucesso: false, mensagem: "Nenhuma doação atualizada. ID pode estar incorreto." };
     }
