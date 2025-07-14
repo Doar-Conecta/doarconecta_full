@@ -122,10 +122,9 @@ export default function DoacaoDetalhes() {
               </strong>
               <strong
                 className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
-                ${doacao.Status === "disponivel"
-                    ? "bg-green-200 border-green-300 text-green-800"
-                    : "bg-red-100 border-red-300 text-red-800"
-                  }`}
+                ${doacao.Status === "disponivel" || doacao.Status === "Concluido"
+                  ? "border-green-400 text-green-900 bg-green-100"
+                  : "border-red-400 text-red-900 bg-red-100"}`}
               >
                 {doacao.Status.toLocaleUpperCase()}
               </strong>

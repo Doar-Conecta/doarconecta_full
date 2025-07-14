@@ -53,7 +53,12 @@ export default function DoacoesDisponiveis() {
       try {
         const res = await fetch("/api/doacoes");
         const data = await res.json();
-        setDoacoes(data || []);
+
+        const doacoesFiltradas = (data || []).filter(
+          (doacao: Doacao) => doacao.Status.toLowerCase() !== "concluido"
+        );
+
+        setDoacoes(doacoesFiltradas);
       } catch (error) {
         console.error("Erro ao carregar doações:", error);
         setDoacoes([]);
@@ -62,6 +67,7 @@ export default function DoacoesDisponiveis() {
 
     fetchDoacoes();
   }, []);
+
 
   return (
     <>
