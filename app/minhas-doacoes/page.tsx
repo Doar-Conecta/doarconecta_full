@@ -39,7 +39,7 @@ function getImagemPorCategoria(categoria: string): string {
 }
 
 export default function MinhasDoacoes() {
-  const [filtro, setFiltro] = useState<'todos' | 'disponiveis' | 'em_analise'>('todos');
+  const [filtro, setFiltro] = useState<'todos' | 'disponiveis' | 'em_analise' | 'concluido'>('todos');
   const [modalAberto, setModalAberto] = useState(false);
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
@@ -123,6 +123,7 @@ export default function MinhasDoacoes() {
     if (filtro === 'todos') return true;
     if (filtro === 'disponiveis') return d.Status.toLowerCase() === 'disponivel';
     if (filtro === 'em_analise') return d.Status.toLowerCase() === 'em analise' || d.Status.toLowerCase() === 'em análise';
+    if (filtro === 'concluido') return d.Status.toLowerCase() === 'concluido';
     return true;
   });
 
@@ -163,6 +164,13 @@ export default function MinhasDoacoes() {
             }`}
         >
           Em Análise ({doacoes.filter(d => d.Status.toLowerCase() === 'em analise' || d.Status.toLowerCase() === 'em análise').length})
+        </button>
+        <button
+          onClick={() => setFiltro('concluido')}
+          className={`px-4 py-2 rounded ${filtro === 'concluido' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+        >
+          Concluídos ({doacoes.filter(d => d.Status.toLowerCase() === 'concluido').length})
         </button>
       </div>
 
