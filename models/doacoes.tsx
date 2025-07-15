@@ -1,5 +1,5 @@
 import { RowDataPacket, ResultSetHeader } from "mysql2";
-import db from "../db";
+import db from "../lib/db";
 import bcrypt from 'bcryptjs'
 
 class DoacoesModel {

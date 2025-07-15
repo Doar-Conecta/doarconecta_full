@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import DoacaoCard from "@/components/DoacaoCard";
 import ContentFind from "@/components/ContentFind";
 import Breadcrumb from '@/components/Breadcrumb';
+import ImagemCategoria from "@/lib/catalogoImagemCategoria";
 
 interface Doacao {
   id: number;
@@ -15,34 +16,6 @@ interface Doacao {
   Doador: number;
   Categoria: string;
   Data_Cadastro: string;
-}
-
-function getImagemPorCategoria(categoria: string): string {
-  switch (categoria.toLowerCase()) {
-    case "eletronicos":
-      return "/produtos/eletrodomesticos.jpg";
-
-    case "moveis":
-      return "/produtos/moveis.jpg";
-
-    case "roupas":
-      return "/produtos/cama-mesa-banho.jpg";
-
-    case "alimentos":
-      return "/produtos/banner.jpg";
-
-    case "brinquedos":
-      return "/produtos/brinquedos.jpg";
-
-    case "livros":
-      return "/produtos/livros.jpg";
-
-    case "produtos de limpeza":
-      return "/produtos/produtoLimpeza.png";
-
-    default:
-      return "/produtos/doarConecta.png";
-  }
 }
 
 export default function DoacoesDisponiveis() {
@@ -105,7 +78,7 @@ export default function DoacoesDisponiveis() {
                   categoria={doacao.Categoria.toUpperCase()}
                   localizacao="SP" // Mockado para SP feat futura
                   descricao={doacao.Status.toUpperCase()}
-                  imagem={getImagemPorCategoria(
+                  imagem={ImagemCategoria(
                     doacao.Categoria.toLocaleLowerCase()
                   )}
                 />

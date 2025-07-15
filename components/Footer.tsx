@@ -11,29 +11,23 @@ export default function Footer() {
         </div>
 
         <div className={styles.linksSection}>
-          <h3>Acesso Rápido</h3>
           <ul>
-            <li>Quem somos</li>
             <li>Trabalhe conosco</li>
             <li>Contato</li>
             <li>Parceiros</li>
-            <li>Gerar Doação</li>
           </ul>
         </div>
 
         <div className={styles.contactSection}>
           <h3>Fale Conosco</h3>
-          <p>Atendimento de Segunda a Sexta Feira<br />Das 07:00 às 20:00</p>
+          <p>Atendimento de Segunda a Sexta Feira<br />Das 07:00 às 19:00</p>
           <p>Domingo e Feriados<br />Das 09:00 às 14:00</p>
         </div>
 
-        <div className={styles.securitySection}>
-          <Image src="/site-seguro.png" alt="Site 100% Segura" width={150} height={80} />
-        </div>
       </div>
 
       <div className={styles.bottomBar}>
-        <p>© 2025 - Todos direitos reservados</p>
+        <p>© 2025 - Grupo 03 - Full Digital Project - Bootcamp - Todos direitos reservados</p>
       </div>
     </footer>
   );

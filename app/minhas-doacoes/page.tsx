@@ -7,6 +7,7 @@ import MinhaDoacaoCard from "@/components/MinhaDoacaoCard";
 import styles from '@/components/ContentFind.module.css';
 import Breadcrumb from '@/components/Breadcrumb';
 import { useParams } from "next/navigation";
+import ImagemCategoria from "@/lib/catalogoImagemCategoria";
 
 interface MinhasDoacoes {
   id: number;
@@ -15,27 +16,6 @@ interface MinhasDoacoes {
   Doador: number;
   Categoria: string;
   Data_Cadastro: string;
-}
-
-function getImagemPorCategoria(categoria: string): string {
-  switch (categoria.toLowerCase()) {
-    case "eletronicos":
-      return "/produtos/eletrodomesticos.jpg";
-    case "moveis":
-      return "/produtos/moveis.jpg";
-    case "roupas":
-      return "/produtos/cama-mesa-banho.jpg";
-    case "alimentos":
-      return "/produtos/banner.jpg";
-    case "brinquedos":
-      return "/produtos/brinquedos.jpg";
-    case "livros":
-      return "/produtos/livros.jpg";
-    case "produtos de limpeza":
-      return "/produtos/produtoLimpeza.png";
-    default:
-      return "/produtos/doarConecta.png";
-  }
 }
 
 export default function MinhasDoacoes() {
@@ -79,7 +59,7 @@ export default function MinhasDoacoes() {
 
   const abrirModal = (doacao: MinhasDoacoes) => {
     setDoacaoSelecionada(doacao);
-    setImagemSelecionada(getImagemPorCategoria(doacao.Categoria));
+    setImagemSelecionada(ImagemCategoria(doacao.Categoria));
     setModalAberto(true);
   };
 
@@ -191,7 +171,7 @@ export default function MinhasDoacoes() {
                   categoria={doacao.Categoria.toUpperCase()}
                   localizacao="SP"
                   descricao={doacao.Status.toUpperCase()}
-                  imagem={getImagemPorCategoria(doacao.Categoria)}
+                  imagem={ImagemCategoria(doacao.Categoria)}
                 />
               </div>
             ))}

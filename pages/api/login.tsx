@@ -6,9 +6,12 @@ import nookies from 'nookies'; // Importando nookies para manipulação de cooki
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { email, senha } = req.body;
+    console.log('email: ' + email);
+    console.log('senha: ' + senha);
 
     // Buscar usuário pelo e-mail
     let usuario = await UsuarioModel.buscarUsuarioPorEmail(email);
+    console.log(usuario);
 
     if (!usuario) {
       return res.status(400).json({ message: 'Usuário não encontrado' });

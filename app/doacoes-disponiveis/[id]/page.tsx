@@ -6,6 +6,8 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useParams } from "next/navigation";
+import ImagemCategoria from "@/lib/catalogoImagemCategoria";
+
 
 interface Doacao {
   id: number;
@@ -14,27 +16,6 @@ interface Doacao {
   Doador: number;
   Categoria: string;
   Data_Cadastro: string;
-}
-
-function getImagemPorCategoria(categoria: string): string {
-  switch (categoria.toLowerCase()) {
-    case "eletronicos":
-      return "/produtos/eletrodomesticos.jpg";
-    case "moveis":
-      return "/produtos/moveis.jpg";
-    case "roupas":
-      return "/produtos/cama-mesa-banho.jpg";
-    case "alimentos":
-      return "/produtos/banner.jpg";
-    case "brinquedos":
-      return "/produtos/brinquedos.jpg";
-    case "livros":
-      return "/produtos/livros.jpg";
-    case "produtos de limpeza":
-      return "/produtos/produtoLimpeza.png";
-    default:
-      return "/produtos/doarConecta.png";
-  }
 }
 
 async function enviarPendencia(id: number) {
@@ -90,7 +71,7 @@ export default function DoacaoDetalhes() {
 
         <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6">
           <Image
-            src={getImagemPorCategoria(doacao.Categoria.toLowerCase())}
+            src={ImagemCategoria(doacao.Categoria.toLowerCase())}
             alt={`Imagem da categoria ${doacao.Categoria}`}
             width={800}
             height={400}
@@ -123,8 +104,8 @@ export default function DoacaoDetalhes() {
               <strong
                 className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
                 ${doacao.Status === "disponivel" || doacao.Status === "Concluido"
-                  ? "border-green-400 text-green-900 bg-green-100"
-                  : "border-red-400 text-red-900 bg-red-100"}`}
+                    ? "border-green-400 text-green-900 bg-green-100"
+                    : "border-red-400 text-red-900 bg-red-100"}`}
               >
                 {doacao.Status.toLocaleUpperCase()}
               </strong>
@@ -140,12 +121,14 @@ export default function DoacaoDetalhes() {
             </div>
           </div>
           <div className="flex justify-center">
-            <button
-              className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200"
-              onClick={() => enviarPendencia(doacao.id)}
-            >
-              Aceitar Doação
-            </button>
+            {doacao.Status === 'disponivel' && (
+              <button
+                className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200"
+                onClick={() => enviarPendencia(doacao.id)}
+              >
+                Aceitar Doação
+              </button>
+            )}
           </div>
         </div>
       </main>

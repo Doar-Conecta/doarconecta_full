@@ -1,5 +1,5 @@
 import { RowDataPacket } from "mysql2";
-import db from "../db";
+import db from "../lib/db";
 import bcrypt from 'bcryptjs'
 
 class UsuarioModel {
@@ -45,8 +45,10 @@ class UsuarioModel {
 
   // Buscar o usuário pelo e-mail
   async buscarUsuarioPorEmail(email: string) {
+console.log("email para busca do usuario: " + email);
+
     const [rows] = await db.execute(
-      `SELECT * FROM tblUsuario WHERE Email = ?`,
+      `SELECT * FROM tblusuario WHERE Email = ?`,
       [email]
     );
 
