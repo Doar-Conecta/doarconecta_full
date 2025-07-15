@@ -21,7 +21,7 @@ export default function DoacaoCard({
   imagem,
 }: DoacaoCardProps) {
   return (
-    <a href={`/doacoes-disponiveis/${id}`}>
+    
       <div className="rounded-xl shadow-md overflow-hidden max-w-xs bg-white hover:shadow-lg transition-shadow duration-200 cursor-pointer">
         <div className="relative w-full h-48">
           <Image src={imagem} alt={titulo} fill className="object-cover" />
@@ -35,6 +35,6 @@ export default function DoacaoCard({
           <div className="flex justify-end mt-3"></div>
         </div>
       </div>
-    </a>
+   
   );
 }
