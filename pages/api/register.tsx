@@ -16,7 +16,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       
      
       // Gerar o token JWT
-      const token = jwt.sign({ id: usuario?.id }, process.env.JWT_SECRET || 'jsontoken', { expiresIn: '1h' });
+      const token = jwt.sign({ id: usuario?.id }, process.env.JWT_SECRET || 'jsontoken', { expiresIn: '10m' });
 
       // Definir o cookie com nookies
       nookies.set({ res }, 'auth_token', token, {

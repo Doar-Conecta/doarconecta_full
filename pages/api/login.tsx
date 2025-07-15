@@ -13,18 +13,18 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!usuario) {
       return res.status(400).json({ message: 'Usuário não encontrado' });
     }
-    
+
     // Verificar a senha
     const isValidPassword = await UsuarioModel.verificarSenha(usuario, senha);
 
     if (!isValidPassword) {
       return res.status(401).json({ message: 'Senha incorreta' });
     }
-    
+
     // Gerar o token JWT com um segredo de ambiente
-    const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET || 'jsontoken', { expiresIn: '1h' });
+    const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET || 'jsontoken', { expiresIn: '10m' });
     const a = jwt.decode(token);
-    
+
     //alert("token :" + a );
 
     // Definir o cookie com nookies
@@ -36,18 +36,18 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
       path: '/',          // Define o caminho onde o cookie será válido
     });
 
-    nookies.set({ res },'doador',usuario.id, {
-      path:'/'
+    nookies.set({ res }, 'doador', usuario.id, {
+      path: '/'
     });
 
-    const cookieValor = nookies.get({req}).doador;
-    
-    console.log ("doador: " + cookieValor);
+    const cookieValor = nookies.get({ req }).doador;
+
+    console.log("doador: " + cookieValor);
     console.log("deu");
 
     // Resposta de sucesso com o token
     return res.status(200).json({ message: 'Login bem-sucedido' });
-    
+
   } else {
     return res.status(405).json({ message: 'Método não permitido' });
   }
