@@ -8,6 +8,8 @@ import styles from '@/components/ContentFind.module.css';
 import Breadcrumb from '@/components/Breadcrumb';
 import { useParams } from "next/navigation";
 import ImagemCategoria from "@/lib/catalogoImagemCategoria";
+import Usuario from "@/models/Usuario";
+import { RowDataPacket } from "mysql2";
 
 interface MinhasDoacoes {
   id: number;
@@ -17,6 +19,12 @@ interface MinhasDoacoes {
   Categoria: string;
   Data_Cadastro: string;
 }
+
+  type Usuario = {
+    nomeRazaoSocial: string;
+    email: string;
+    celular: String;
+  };
 
 export default function MinhasDoacoes() {
   const [filtro, setFiltro] = useState<'todos' | 'disponiveis' | 'em_analise' | 'concluido'>('todos');
@@ -32,7 +40,8 @@ export default function MinhasDoacoes() {
   if (typeof window !== 'undefined') {
     const cookies = document.cookie.split("; ");
     const doadorCookie = cookies.find(c => c.startsWith("doador="));
-    let doadorId = doadorCookie?.split("=")[1];
+    const doadorId = doadorCookie?.split("=")[1];
+
   }
 
   useEffect(() => {
@@ -93,7 +102,8 @@ export default function MinhasDoacoes() {
       });
 
       const data = await res.json();
-      alert(data.message || "Status alterado!");
+      alert(data.message || "Doação aceita e status alterado!");
+
     } catch (error) {
       console.error("Erro ao atualizar o status da doação:", error);
     }
@@ -198,9 +208,11 @@ export default function MinhasDoacoes() {
             <p><strong>Categoria:</strong> {doacaoSelecionada.Categoria}</p>
             <div className="mt-4 flex justify-center items-center flex-col">
               {doacaoSelecionada.Status === "Concluido" ? (
-                <p className="text-green-600 font-semibold border border-green-300 bg-green-50 px-4 py-2 rounded">
-                  A doação foi concluída!
-                </p>
+                <>
+                  <p className="text-green-600 font-semibold border border-green-300 bg-green-50 px-4 py-2 rounded">
+                    A doação foi concluída!
+                  </p>
+                </>
               ) : (
                 <>
                   <p className="mb-2 font-medium">O item já foi doado?</p>

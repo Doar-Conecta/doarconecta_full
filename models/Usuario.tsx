@@ -45,7 +45,7 @@ class UsuarioModel {
 
   // Buscar o usuário pelo e-mail
   async buscarUsuarioPorEmail(email: string) {
-console.log("email para busca do usuario: " + email);
+    console.log("email para busca do usuario: " + email);
 
     const [rows] = await db.execute(
       `SELECT * FROM tblusuario WHERE Email = ?`,
@@ -76,6 +76,19 @@ console.log("email para busca do usuario: " + email);
     }
 
     return null;  // Se não encontrar o usuário
+  }
+
+  async buscarUsuarioDetalhePorId(id: number) {
+    const [rows] = await db.execute<RowDataPacket[]>(
+      `SELECT NomeRazaoSocial, Email, Celular FROM tblUsuario WHERE id = ?`,
+      [id]
+    );
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      return rows[0]; // Retorna o primeiro usuário encontrado
+    }
+
+    return null;
   }
 
   async buscarUsuarioPorTipo(tipo: number) {
