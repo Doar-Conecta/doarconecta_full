@@ -30,18 +30,19 @@ export default function MinhasDoacoes() {
   const [filtro, setFiltro] = useState<'todos' | 'disponiveis' | 'em_analise' | 'concluido'>('todos');
   const [modalAberto, setModalAberto] = useState(false);
   const params = useParams();
+  //const [doadorId,setDoadorId] = useState<string | undefined>();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const [doacaoSelecionada, setDoacaoSelecionada] = useState<MinhasDoacoes | undefined>();
   const [imagemSelecionada, setImagemSelecionada] = useState<string>("");
   const [doacoes, setDoacoes] = useState<MinhasDoacoes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  let doadorId = 9;
+  let doadorId = 2;
   if (typeof window !== 'undefined') {
     const cookies = document.cookie.split("; ");
     const doadorCookie = cookies.find(c => c.startsWith("doador="));
-    const doadorId = doadorCookie?.split("=")[1];
-
+    const doadorLogId = doadorCookie?.split("=")[1];
+    //setDoadorId(doadorLogId);
   }
 
   useEffect(() => {

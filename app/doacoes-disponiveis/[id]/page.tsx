@@ -18,6 +18,12 @@ interface Doacao {
   Data_Cadastro: string;
 }
 
+interface Usuario {
+  Email: string;
+  NomeRazaoSocial: string;
+  Celular: string;
+}
+
 async function enviarPendencia(id: number) {
   try {
     const res = await fetch(`/api/doacoes-param/${id}`, {
@@ -38,6 +44,7 @@ export default function DoacaoDetalhes() {
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const [doacao, setDoacao] = useState<Doacao | undefined>();
+  const [doador, setDoador] = useState<Usuario | undefined>();
 
   useEffect(() => {
     const fetchDoacoes = async () => {
@@ -53,10 +60,33 @@ export default function DoacaoDetalhes() {
     if (id) fetchDoacoes();
   }, [id]);
 
-  if (!doacao)
+  useEffect(() => {
+    const fetchDoador = async () => {
+      try {
+        const resDoador = await fetch(`/api/usuario/usuario/${doacao?.Doador}`);
+        const dataDoador = await resDoador.json();
+        setDoador(Array.isArray(dataDoador) ? dataDoador[0] : dataDoador);
+      } catch (error) {
+        console.error("Erro ao carregar doador:", error);
+      }
+    };
+
+    if (doacao?.Doador) fetchDoador();
+  }, [doacao?.Doador]);
+
+  if (!doacao) {
     return (
-      <p className="text-center mt-10">Carregando ou doação não encontrada.</p>
+      <>
+        <Navbar />
+        <main className="p-6 max-w-3xl mx-auto">
+          <p className="text-center mt-10">
+            Carregando ou doação não encontrada.
+          </p>
+        </main>
+        <Footer />
+      </>
     );
+  }
 
   return (
     <>
@@ -88,47 +118,80 @@ export default function DoacaoDetalhes() {
               </strong>
             </div>
 
-            <div className="flex items-center gap-2 pt-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
-                Descrição:
-              </strong>
-              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
-                {doacao.Descricao}
-              </strong>
-            </div>
+            <div className="text-lg text-gray-800 mb-4">
+              <div className="flex pt-1 items-center gap-2">
+                <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                  Email:
+                </strong>
+                <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                  {doador?.Email?.toLocaleLowerCase() || "Não informado"}
+                </strong>
+              </div>
 
-            <div className="flex items-center pt-2 gap-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
-                Status:
-              </strong>
-              <strong
-                className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
+              <div className="text-lg text-gray-800 mb-4">
+                <div className="flex pt-1 items-center gap-2">
+                  <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                    Nome Doador:
+                  </strong>
+                  <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                    {doador?.NomeRazaoSocial || "Não informado"}
+                  </strong>
+                </div>
+
+                <div className="text-lg text-gray-800 mb-4">
+                  <div className="flex pt-1 items-center gap-2">
+                    <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                      Celular:
+                    </strong>
+                    <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                      {doador?.Celular?.toLocaleLowerCase() || "Não informado"}
+                    </strong>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                      Descrição:
+                    </strong>
+                    <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                      {doacao.Descricao}
+                    </strong>
+                  </div>
+
+                  <div className="flex items-center pt-2 gap-2">
+                    <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                      Status:
+                    </strong>
+                    <strong
+                      className={`pl-2 border px-2 rounded-md font-medium shadow-sm 
                 ${doacao.Status === "disponivel" || doacao.Status === "Concluido"
-                    ? "border-green-400 text-green-900 bg-green-100"
-                    : "border-red-400 text-red-900 bg-red-100"}`}
-              >
-                {doacao.Status.toLocaleUpperCase()}
-              </strong>
-            </div>
+                          ? "border-green-400 text-green-900 bg-green-100"
+                          : "border-red-400 text-red-900 bg-red-100"}`}
+                    >
+                      {doacao.Status.toLocaleUpperCase()}
+                    </strong>
+                  </div>
 
-            <div className="flex items-center gap-2 pt-2">
-              <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
-                Data de Cadastro:
-              </strong>
-              <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
-                {new Date(doacao.Data_Cadastro).toLocaleDateString()}
-              </strong>
+                  <div className="flex items-center gap-2 pt-2">
+                    <strong className="bg-green-600 text-white px-2 rounded-md font-bold">
+                      Data de Cadastro:
+                    </strong>
+                    <strong className="pl-2 border border-yellow-400 text-yellow-900 px-2 rounded-md bg-yellow-100 font-medium shadow-sm">
+                      {new Date(doacao.Data_Cadastro).toLocaleDateString()}
+                    </strong>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  {doacao.Status === 'disponivel' && (
+                    <button
+                      className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200"
+                      onClick={() => enviarPendencia(doacao.id)}
+                    >
+                      Aceitar Doação
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-center">
-            {doacao.Status === 'disponivel' && (
-              <button
-                className="cursor-pointer px-6 py-3 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-md shadow-md transition duration-200"
-                onClick={() => enviarPendencia(doacao.id)}
-              >
-                Aceitar Doação
-              </button>
-            )}
           </div>
         </div>
       </main>
