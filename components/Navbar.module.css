@@ -84,13 +84,39 @@
   }
   
   /* Responsividade */
-  @media (max-width: 768px) {
-    .menuButton {
-      display: block;
-    }
-  
-    .navList {
-      display: none;
-    }
+/* Responsividade */
+@media (max-width: 768px) {
+  .menuButton {
+    display: block;
   }
-  
+
+  /* Esconde por padrão */
+  .navList {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 20px;
+    border-top: 1px solid #eee;
+  }
+
+  /* Mostra quando menuOpen = true */
+  .navList.navListOpen {
+    display: flex;
+  }
+
+  /* Coloca botão login dentro do menu mobile */
+  .loginButton {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .containerNav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
